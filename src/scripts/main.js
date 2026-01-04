@@ -8,21 +8,23 @@ ulTree.addEventListener('click', (e) => {
   if (e.target.tagName === 'SPAN') {
     const parentSelected = e.target.closest('li');
 
-    const closestUL =
-      parentSelected.querySelector('ul') ?? parentSelected.parentElement;
+    const childUL = parentSelected.querySelector('ul');
 
-    closestUL.style.display =
-      closestUL.style.display === 'none' ? null : 'none';
+    if (childUL) {
+      childUL.style.display = childUL.style.display === 'none' ? null : 'none';
+    }
   }
 });
 
 function WrapTextWithSpan() {
   ulTree.querySelectorAll('li').forEach((li) => {
     li.childNodes.forEach((childNode) => {
-      if (childNode.nodeType === Node.TEXT_NODE) {
+      const childTextContent = childNode.textContent.trim();
+
+      if (childNode.nodeType === Node.TEXT_NODE && childTextContent.length) {
         const span = document.createElement('span');
 
-        span.textContent = childNode.textContent;
+        span.textContent = childTextContent;
         childNode.replaceWith(span);
       }
     });
